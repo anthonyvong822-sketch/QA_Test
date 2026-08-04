@@ -31,5 +31,13 @@ namespace UnitTestProject1
             var returnObj = await Service.VerifyProductsListAsync();
             Assert.IsNotNull(returnObj);
         }
+
+        [TestMethod]
+        public async Task SearchTest()
+        {
+            var Service = new QA.SearchProductsTest();
+            string returnString = await Service.VerifySearchAsync("top");
+            Assert.IsNotNull(returnString);
+        }
     }
 }

@@ -138,4 +138,28 @@ namespace QA
             return ProductListObj;
         }
     }
+    public class SearchProductsTest
+    {
+        private readonly HttpClient _client = new HttpClient();
+        private const string LoginUrl = "https://automationexercise.com/api/searchProduct";
+        private string responseString = null;
+        public async Task<string> VerifySearchAsync(string ProductName)
+        {
+            if (string.IsNullOrWhiteSpace(ProductName)) responseString = "Product Name is empty";
+            if (string.IsNullOrWhiteSpace(responseString))
+            {
+                var POST_URL = $"{LoginUrl}?search_product={Uri.EscapeDataString(ProductName)}";
+                using (var request = new HttpRequestMessage(HttpMethod.Post, POST_URL))
+                {
+                    request.Content = new StringContent("", null, "text/plain");
+                    using (var response = await _client.SendAsync(request))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        responseString = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            return responseString;
+        }
+    }
 }
